@@ -16,12 +16,13 @@ export const GithubState = ({children}) => {
         user: {}, 
         users: [],
         loading: false,
-        repos: []
+        repositories: []
     }
+    
     
     const [state, dispatch] = useReducer(githubReducer, initialState)
 
-    const {user, users, loading, repos} = state
+    const {user, users, loading, repositories} = state
     
     const clearUsers = () => dispatch({type: CLEAR_USERS})
 
@@ -31,7 +32,7 @@ export const GithubState = ({children}) => {
         setLoading()
 
         const response = await axios.get(withCreds(`https://api.github.com/search/users?q=${value}&`))
-
+        
         dispatch({
             type: SEARCH_USERS,
             payload: response.data.items
@@ -60,13 +61,11 @@ export const GithubState = ({children}) => {
         })
     }
 
-    
-
     return (
         <div>
             <GithubContext.Provider value={{
                 clearUsers, searchUsers, getReps, getUser, setLoading, 
-                user, users, loading, repos
+                user, users, loading, repositories
             }}>
                 {children}
             </GithubContext.Provider>
